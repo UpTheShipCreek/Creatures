@@ -13,8 +13,10 @@ template <typename T> class cyList{
 
     public:
     cyList();
+    ~cyList();
     void addToEmpty(T data);
     void add(T data);
     Node<T>* traverse(int position);
     void add_in_position(T data, int position);
+    T get_data(Node<T>* Node);
 };
