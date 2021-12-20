@@ -7,14 +7,14 @@ template <typename T> class Node
 };
 
 template <typename T> class cyList{
-    Node<T>* Head;
     Node<T>* Last;
-    int size;
+    int Size;
+    int add_call_count;
 
     public:
     cyList();
     ~cyList();
-    void addToEmpty(T data);
+    void add_to_empty(T data);
     void add(T data);
     Node<T>* traverse(int position);
     void add_in_position(T data, int position);
