@@ -15,6 +15,11 @@ class Creature{
     public:
     Creature() = default;
 
+    Creature(int life, string name){
+        L = life;
+        Name = name;
+    }
+
     void clone(Creature inplace){
         Name = inplace.Name;
         L = inplace.L;
@@ -41,12 +46,6 @@ class Creature{
     int threshhold(){
         return L;
     }
-
-    void initialize(int life, string name){
-        L = life;
-        Name = name;
-    }
-
     string get_creature_name(){
         return Name;
     }
@@ -63,9 +62,6 @@ class good_Creature: public Creature{
 
     bool is_a_good(){
         return is_Good;
-    }
-    void bless(){
-
     }
 };
 
