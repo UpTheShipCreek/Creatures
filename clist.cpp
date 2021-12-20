@@ -1,4 +1,5 @@
 #include "clist.h"
+#include <string>
 
 template <typename T> 
 cyList<T>::cyList(){
@@ -66,4 +67,15 @@ void cyList<T>::add_in_position(T data, int position){
     
 }
 
-template class cyList<int>;
+class Creature{
+    std::string Name;
+    int L;
+    bool is_Good;
+
+    public:
+    Creature() = default;
+    Creature(std::string name);
+    Creature(int life, std::string name);
+};
+
+template class cyList<Creature>;
