@@ -22,13 +22,13 @@ cyList<T>::~cyList(){
     
 }
 template <typename T> 
-void cyList<T>::add_to_empty(T data){
+void cyList<T>::add_to_empty(T* data){
     Last->Data = data; 
     Size++;
 }
 
 template <typename T> 
-void cyList<T>::add(T data){
+void cyList<T>::add(T* data){
     if (Size == 0){
         add_to_empty(data);
     }
@@ -56,15 +56,20 @@ Node<T>* cyList<T>::traverse(int position){
     return temp;      
 }
 template <typename T> 
-T cyList<T>::get_data(Node<T>* Node){  
+T* cyList<T>::get_data(Node<T>* Node){  
     return Node->Data; 
 }
 
 template <typename T> 
-void cyList<T>::add_in_position(T data, int position){
+void cyList<T>::add_in_position(T* data, int position){
     Node<T>* node = traverse(position);
     node->Data = data;
     
+}
+
+template <typename T> 
+int cyList<T>::get_size(){
+    return Size;
 }
 
 class Creature{
