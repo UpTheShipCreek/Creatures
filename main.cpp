@@ -49,9 +49,12 @@ int main(int argc, char *argv[]){
         cout << "Good Dominates in the World!" << endl;
     }
     else if(society.no_of_zombies() == N){
-        cout << "This is a dead society" << endl;
+        cout << "This is a dead society " << society.no_of_zombies() << endl;
     }
     else {
         cout << "Try again to improve the world" << endl;
     }
+
+    free(good_thrsh);
+    free(bad_thrsh);
 }
