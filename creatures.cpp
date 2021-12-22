@@ -47,6 +47,12 @@ bool Creature::is_a_zombie(){
 int Creature::threshhold(){
     return L;
 }
+
+void Creature::add_creature_information(int life, string name){
+    L = life;
+    Name = name;
+}
+
 string Creature::get_creature_name(){
     return Name;
 }
@@ -54,11 +60,11 @@ string Creature::get_creature_name(){
 
 /*--------------------------Good Creature--------------------------*/
 
-good_Creature::good_Creature(int life, string name){
-    L = life;
-    Name = name;
-    is_Good = true;
-}
+// good_Creature::good_Creature(int life, string name){
+//     L = life;
+//     Name = name;
+//     is_Good = true;
+// }
 
 good_Creature::good_Creature(){
     is_Good = true;
@@ -71,11 +77,11 @@ bool good_Creature::is_a_good(){
 
 /*--------------------------Bad Creature--------------------------*/
 
-bad_Creature::bad_Creature(int life, string name){
-    L = life;
-    Name = name;
-    is_Good = false;
-}
+// bad_Creature::bad_Creature(int life, string name){
+//     L = life;
+//     Name = name;
+//     is_Good = false;
+// }
 
 bad_Creature::bad_Creature(){
     is_Good = false;
@@ -102,12 +108,14 @@ creature_Society::creature_Society(int N, int life){
     for(i = 1; i <= N; i++){
         random = (rand()%2);
         if(random == 1){
-            Creature* creature = new good_Creature(life, random_string());
+            Creature* creature = new good_Creature();
+            creature->add_creature_information(life, random_string());
             Society.add(creature);
             cout << "Adding good creature" << endl;
         }
         else{
-            Creature* creature = new bad_Creature(life, random_string());
+            Creature* creature = new bad_Creature();
+            creature->add_creature_information(life, random_string());
             Society.add(creature);
             cout << "Adding bad creature" << endl;
         }

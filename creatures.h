@@ -5,12 +5,10 @@
 using namespace std;
 
 class Creature{
-    // string Name;
-    // int L;
-
-    public:
     string Name;
     int L;
+
+    public:
     Creature();
     Creature(string name);
     Creature(int life, string name);
@@ -22,6 +20,7 @@ class Creature{
     bool is_a_zombie();
     int threshhold();
     string get_creature_name();
+    void add_creature_information(int life, string name);
 };
 
 class good_Creature:public Creature{
@@ -48,7 +47,7 @@ class creature_Society{
 
     public:
     creature_Society();
-    //~creature_Society();
+    // ~creature_Society();
     creature_Society(int N, int life);
     creature_Society(int N);
     void beat(int position);
