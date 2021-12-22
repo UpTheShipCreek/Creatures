@@ -19,7 +19,6 @@ cyList<T>::~cyList(){
         i++;
     }
     delete Last;
-    
 }
 template <typename T> 
 void cyList<T>::add_to_empty(T* data){
@@ -63,8 +62,9 @@ T* cyList<T>::get_data(Node<T>* Node){
 template <typename T> 
 void cyList<T>::add_in_position(T* data, int position){
     Node<T>* node = traverse(position);
+    T* Data = get_data(node);
+    delete Data;
     node->Data = data;
-    
 }
 
 template <typename T> 
