@@ -211,15 +211,17 @@ void creature_Society::clone_zombies(int position){
                     Creature* clone = new good_Creature();
                     clone->clone(cloned);
                     Society.add_in_position(clone, i);
+                    cout << "Cloning creature in position " << position << endl;
                 }
                 else{
                     Creature* clone = new bad_Creature();
                     clone->clone(cloned);
                     Society.add_in_position(clone, i);
+                    cout << "Cloning creature in position " << position << endl;
                 }
             }
         }
-        cout << "Cloning creature in position " << position << endl;
+       
     }     
 }
 int creature_Society::no_of_good(){
