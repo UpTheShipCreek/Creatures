@@ -10,12 +10,13 @@ class Creature{
 
     public:
     Creature();
+    //Creature(const Creature &replace);
     Creature(string name);
     Creature(int life, string name);
     void clone(Creature* replace);
     void bless();
     void beat();
-    void set_life(int life);
+    int get_life();
     bool virtual is_a_good() = 0;; //pure virtual
     bool is_a_zombie();
     int threshhold();
@@ -30,6 +31,7 @@ class good_Creature:public Creature{
     good_Creature(int life, string name);
     good_Creature();
     bool is_a_good();
+    // void clone(Creature* replace);
 };
 
 class bad_Creature:public Creature{
@@ -39,6 +41,7 @@ class bad_Creature:public Creature{
     bad_Creature(int life, string name);
     bad_Creature();
     bool is_a_good();
+    // void clone(Creature* replace);
 };
 
 class creature_Society{
@@ -47,7 +50,7 @@ class creature_Society{
 
     public:
     creature_Society();
-    // ~creature_Society();
+    ~creature_Society();
     creature_Society(int N, int life);
     creature_Society(int N);
     void beat(int position);
@@ -56,4 +59,5 @@ class creature_Society{
     void clone_zombies(int position);
     int no_of_good();
     int no_of_zombies();
+    void print();
 };

@@ -10,6 +10,11 @@ int* bad_thrsh;
 /*--------------------------General Creature--------------------------*/
 Creature::Creature() = default;
 
+// Creature::Creature(const Creature &replace)){
+//     L = replace.L;
+//     Name = replace.Name;
+// }
+
 Creature::Creature(string name){
     Name = name;
 }
@@ -20,8 +25,8 @@ Creature::Creature(int life, string name){
 }
 
 void Creature::clone(Creature* replace){
-    Name = replace->Name;
-    L = replace->L;
+    this->L = replace->L;
+    this->Name = replace->Name;
 }
 void Creature::bless(){
     if(is_a_zombie() == false){
@@ -33,8 +38,8 @@ void Creature::beat(){
         L--;
     }
 }
-void Creature::set_life(int life){
-    L = life;
+int Creature::get_life(){
+    return this->L;
 }
 
 bool Creature::is_a_zombie(){
@@ -73,6 +78,10 @@ good_Creature::good_Creature(){
 bool good_Creature::is_a_good(){
     return is_Good;
 }
+// void good_Creature::clone(Creature* replace){
+//     Creature::clone(replace);
+//     is_Good = replace->is_a_good();
+// }
 /*--------------------------Good Creature--------------------------*/
 
 /*--------------------------Bad Creature--------------------------*/
@@ -90,18 +99,24 @@ bad_Creature::bad_Creature(){
 bool bad_Creature::is_a_good(){
     return is_Good;
 }
+
+// void bad_Creature::clone(Creature* replace){
+//     Creature::clone(replace);
+//     is_Good = replace->is_a_good();
+// }
+
 /*--------------------------Bad Creature--------------------------*/
 
 /*--------------------------Creature Society--------------------------*/
 creature_Society::creature_Society() = default;
 
-// creature_Society::~creature_Society(){
-//     while(Size > 0){
-//         Creature* rcreature = Society.get_data(Society.traverse(Size));
-//         delete rcreature;
-//         Size--;
-//     }
-// }
+creature_Society::~creature_Society(){
+    while(Size > 0){
+        Creature* rcreature = Society.get_data(Society.traverse(Size));
+        delete rcreature;
+        Size--;
+    }
+}
 
 creature_Society::creature_Society(int N, int life){
     int i, random;
@@ -111,13 +126,13 @@ creature_Society::creature_Society(int N, int life){
             Creature* creature = new good_Creature();
             creature->add_creature_information(life, random_string());
             Society.add(creature);
-            cout << "Adding good creature" << endl;
+            // cout << "Adding good creature" << endl;
         }
         else{
             Creature* creature = new bad_Creature();
             creature->add_creature_information(life, random_string());
             Society.add(creature);
-            cout << "Adding bad creature" << endl;
+            // cout << "Adding bad creature" << endl;
         }
         Size++;
     }
@@ -141,27 +156,29 @@ creature_Society::creature_Society(int N){
 
 void creature_Society::beat(int position){
     Creature* creature = Society.get_data(Society.traverse(position));
-    cout << "Beating creature in position " << position << endl;
+    // cout << "Beating creature in position " << position << endl;
     creature->beat();
 }
 
 void creature_Society::bless(int position){
     Creature* creature = Society.get_data(Society.traverse(position));
-    cout << "Blessing creature in position " << position << endl;
+    // cout << "Blessing creature in position " << position << endl;
     creature->bless();
-    if(creature->is_a_good() && creature->threshhold() > (*good_thrsh)){
-        clone_next(position);
-    }
-    else if(creature->threshhold() > (*bad_thrsh)){
-        clone_zombies(position);
+    if(creature->is_a_zombie() == false){
+        if(creature->is_a_good() && creature->threshhold() > (*good_thrsh)){
+            clone_next(position);
+        }
+        else if(creature->threshhold() > (*bad_thrsh)){
+            clone_zombies(position);
+        }
     }
 }
 void creature_Society::clone_next(int position){
     Creature* cloned = Society.get_data(Society.traverse(position)); 
     position += 1;
-    // Creature* removed = Society.get_data(Society.traverse(position)); 
-    // delete removed;
-    Society.add_in_position(cloned, position);
+    Creature* removed = Society.get_data(Society.traverse(position)); 
+    removed->clone(cloned);
+    //Society.add_in_position(cloned, position);
 }
 void creature_Society::clone_zombies(int position){
     Creature* creature = Society.get_data(Society.traverse(position));
@@ -173,7 +190,7 @@ void creature_Society::clone_zombies(int position){
             zcreature = Society.get_data(Society.traverse(i));
             if(zcreature->is_a_zombie()){
                 //delete zcreature;
-                Society.add_in_position(creature, i);
+                zcreature->clone(creature);
             }
         }
     }     
@@ -201,5 +218,14 @@ int creature_Society::no_of_zombies(){
         }
     }
     return number;
+}
+
+void creature_Society::print(){
+    for(int i = 1; i <= Society.get_size(); i++){
+        Creature* creature = Society.get_data(Society.traverse(i));
+        cout << "Creature in memory address: " << creature << " is named " << creature->get_creature_name() << " his HP is " << creature->get_life()
+        << " good: " << creature->is_a_good() << " zombie: " << creature->is_a_zombie() << endl;
+    }
+    cout << Society.get_size() << this->no_of_good() << this->no_of_zombies() << endl;
 }
 /*--------------------------Creature Society--------------------------*/
