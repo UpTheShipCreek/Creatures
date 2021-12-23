@@ -19,4 +19,5 @@ template <typename T> class cyList{
     void add_in_position(T* data, int position);
     T* get_data(Node<T>* Node);
     int get_size();
+    int get_position(T* data);
 };

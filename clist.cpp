@@ -62,14 +62,23 @@ T* cyList<T>::get_data(Node<T>* Node){
 template <typename T> 
 void cyList<T>::add_in_position(T* data, int position){
     Node<T>* node = traverse(position);
-    // T* Data = get_data(node);
-    // delete Data;
     node->Data = data;
 }
 
 template <typename T> 
 int cyList<T>::get_size(){
     return Size;
+}
+
+template <typename T> 
+int cyList<T>::get_position(T* data){
+    Node<T>* temp = Last->Next;
+    int  i = 1;
+    while(temp->Data != data){
+        temp = temp->Next;
+        i++;
+    }
+    return i;
 }
 
 class Creature{
