@@ -10,7 +10,7 @@ class Creature{
 
     public:
     Creature();
-    //Creature(const Creature &replace);
+    Creature(const Creature &replace);
     Creature(string name);
     Creature(int life, string name);
     void clone(Creature* replace);

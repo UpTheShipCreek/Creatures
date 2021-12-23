@@ -35,6 +35,8 @@ int main(int argc, char *argv[]){
 
     creature_Society society(N, L);
 
+    society.print();
+
     for(i = 1; i <= M; i++){
         heads_or_tails = (rand()%2);
         random_spot = (rand()%N) + 1;
@@ -45,11 +47,14 @@ int main(int argc, char *argv[]){
             society.bless(random_spot);
         }
     }
+
+    society.print();
+
     if(society.no_of_good() == N){
         cout << "Good Dominates in the World!" << endl;
     }
     else if(society.no_of_zombies() == N){
-        cout << "This is a dead society " << society.no_of_zombies() << endl;
+        cout << "This is a dead society " << endl;
     }
     else {
         cout << "Try again to improve the world" << endl;
