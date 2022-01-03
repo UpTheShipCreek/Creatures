@@ -3,7 +3,7 @@
 
 
 
-int* good_thrsh;
+int* good_thrsh; //global variables για τα thresholds
 int* bad_thrsh;
 
 

@@ -1,5 +1,14 @@
 Γεώργιος Παναγιωτόπουλος 1115201700113
 
+Kληση του προγραμματος:
+$ make
+$ ./output [# of creatures of the society] [# of actions] [life of the creatures] [good_thrsh] [bad_thrsh]
+
+Παραδειγμα κλησης:
+$ make
+$ ./output 5 20 5 5 1
+
+
 Για την υλοποιηση των συναρτησεων creatures, εχω χρησιμοποιησει μια δομη κυκλικης λιστας* (cyList) και μια συναρτηση που επιστρεφει random χαρακτηρες (randomstring)
     Η cyList, χρησιμοποιει template για το type, ετσι ωστε να ειναι generic (αν και στην προκειμενη περιπτωση, το type ειναι το creature)
     και εμπεριεχει συναρτησεις για add και add_in_position, traverse, get_data και index
