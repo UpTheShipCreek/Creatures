@@ -10,10 +10,10 @@ class Creature{
 
     public:
     Creature();
-    Creature(const Creature &replace);
+    Creature(Creature *old_creature);
     Creature(string name);
     Creature(int life, string name);
-    void clone(Creature* replace);
+    // void clone(Creature* replace);
     void bless();
     void beat();
     bool virtual is_a_good() = 0;; //pure virtual
@@ -27,18 +27,20 @@ class good_Creature:public Creature{
     bool is_Good;
 
     public:
+    good_Creature(int life, string name);
+    good_Creature(Creature *old_creature);
     good_Creature();
     bool is_a_good();
-    // void clone(Creature* replace);
 };
 
 class bad_Creature:public Creature{
     bool is_Good;
 
     public:
+    bad_Creature(int life, string name);
+    bad_Creature(Creature *old_creature);
     bad_Creature();
     bool is_a_good();
-    // void clone(Creature* replace);
 };
 
 class creature_Society{

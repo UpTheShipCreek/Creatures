@@ -10,13 +10,9 @@ int* bad_thrsh;
 /*--------------------------General Creature--------------------------*/
 Creature::Creature() = default;
 
-Creature::Creature(const Creature &replace){
-    L = replace.L;
-    Name = replace.Name;
-}
-
-Creature::Creature(string name){
-    Name = name;
+Creature::Creature(Creature *old_creature){
+    L = old_creature->L;
+    Name = old_creature->Name;
 }
 
 Creature::Creature(int life, string name){
@@ -24,10 +20,10 @@ Creature::Creature(int life, string name){
     Name = name;
 }
 
-void Creature::clone(Creature* replace){
-    this->L = replace->L;
-    this->Name = replace->Name;
-}
+// void Creature::clone(Creature* replace){
+//     this->L = replace->L;
+//     this->Name = replace->Name;
+// }
 void Creature::bless(){
     if(is_a_zombie() == false){
         L++;
@@ -50,11 +46,6 @@ int Creature::threshold(){
     return L;
 }
 
-void Creature::add_creature_information(int life, string name){
-    L = life;
-    Name = name;
-}
-
 string Creature::get_creature_name(){
     return Name;
 }
@@ -62,13 +53,17 @@ string Creature::get_creature_name(){
 
 /*--------------------------Good Creature--------------------------*/
 
-// good_Creature::good_Creature(int life, string name){
-//     L = life;
-//     Name = name;
-//     is_Good = true;
-// }
-
 good_Creature::good_Creature(){
+    is_Good = true;
+    cout << "Creating good creature" << endl;
+}
+
+good_Creature::good_Creature(Creature *old_creature):Creature(*old_creature){
+    is_Good = true;
+    cout << "Creating good creature" << endl;
+}
+
+good_Creature::good_Creature(int life, string name):Creature(life, name){
     is_Good = true;
     cout << "Creating good creature" << endl;
 }
@@ -76,21 +71,22 @@ good_Creature::good_Creature(){
 bool good_Creature::is_a_good(){
     return is_Good;
 }
-// void good_Creature::clone(Creature* replace){
-//     Creature::clone(replace);
-//     is_Good = replace->is_a_good();
-// }
+
 /*--------------------------Good Creature--------------------------*/
 
 /*--------------------------Bad Creature--------------------------*/
 
-// bad_Creature::bad_Creature(int life, string name){
-//     L = life;
-//     Name = name;
-//     is_Good = false;
-// }
-
 bad_Creature::bad_Creature(){
+    is_Good = false;
+    cout << "Creating bad creature" << endl;
+}
+
+bad_Creature::bad_Creature(Creature *old_creature):Creature(*old_creature){
+    is_Good = false;
+    cout << "Creating bad creature" << endl;
+}
+
+bad_Creature::bad_Creature(int life, string name):Creature(life, name){
     is_Good = false;
     cout << "Creating bad creature" << endl;
 }
@@ -99,15 +95,26 @@ bool bad_Creature::is_a_good(){
     return is_Good;
 }
 
-// void bad_Creature::clone(Creature* replace){
-//     Creature::clone(replace);
-//     is_Good = replace->is_a_good();
-// }
-
 /*--------------------------Bad Creature--------------------------*/
 
 /*--------------------------Creature Society--------------------------*/
-creature_Society::creature_Society() = default;
+
+creature_Society::creature_Society(int N, int life){
+    int i, random;
+    for(i = 1; i <= N; i++){
+        random = (rand()%2);
+        if(random == 1){
+            Creature* creature = new good_Creature(life, random_string()); //create a new good creature 
+            Society.add(creature); //add the creature in the creature society
+        }
+        else{
+            Creature* creature = new bad_Creature(life, random_string()); //create a new bad creature 
+            Society.add(creature); //add the creature in the creature society
+        }
+        Size++;
+    }
+    cout << "Created creature society" << endl;
+}
 
 creature_Society::~creature_Society(){
     while(Size > 0){
@@ -116,43 +123,6 @@ creature_Society::~creature_Society(){
         Size--;
     }
     cout << "Deleted creature society" << endl;
-}
-
-creature_Society::creature_Society(int N, int life){
-    int i, random;
-    for(i = 1; i <= N; i++){
-        random = (rand()%2);
-        if(random == 1){
-            Creature* creature = new good_Creature(); //create a new good creature 
-            creature->add_creature_information(life, random_string()); //assign the creature a name and a life
-            Society.add(creature); //add the creature in the creature society
-            // cout << "Adding good creature" << endl;
-        }
-        else{
-            Creature* creature = new bad_Creature(); //create a new bad creature 
-            creature->add_creature_information(life, random_string()); //assign the creature a name and a life
-            Society.add(creature); //add the creature in the creature society
-            // cout << "Adding bad creature" << endl;
-        }
-        Size++;
-    }
-    cout << "Created creature society" << endl;
-}
-
-creature_Society::creature_Society(int N){
-    int i, random;
-    for(i = 1; i <= N; i++){
-        random = (rand()%2);
-        if(random >= 1){
-            Creature* creature = new good_Creature();
-            Society.add(creature);
-        }
-        else{
-            Creature* creature = new bad_Creature();
-            Society.add(creature);
-        }
-        Size++;
-    }
 }
 
 void creature_Society::beat(int position){
@@ -181,16 +151,15 @@ void creature_Society::clone_next(int position){
         Creature* removed = Society.get_data(Society.traverse(position)); 
         delete removed;
         if(cloned->is_a_good()){
-            Creature* clone = new good_Creature();
-            clone->clone(cloned);
+            Creature* clone = new good_Creature(cloned);
+            //clone->clone(cloned);
             Society.add_in_position(clone, position);
         }
         else{
-            Creature* clone = new bad_Creature();
-            clone->clone(cloned);
+            Creature* clone = new bad_Creature(cloned);
+            //clone->clone(cloned);
             Society.add_in_position(clone, position);
         }
-    //removed->clone(cloned);
     cout << "Cloning creature in position " << position-1 << endl;
     }
 }
@@ -205,14 +174,14 @@ void creature_Society::clone_zombies(int position){
             if(zcreature->is_a_zombie()){
                 delete zcreature;
                 if(cloned->is_a_good()){
-                    Creature* clone = new good_Creature();
-                    clone->clone(cloned);
+                    Creature* clone = new good_Creature(cloned);
+                    //clone->clone(cloned);
                     Society.add_in_position(clone, i);
                     cout << "Cloning creature in position " << position << endl;
                 }
                 else{
-                    Creature* clone = new bad_Creature();
-                    clone->clone(cloned);
+                    Creature* clone = new bad_Creature(cloned);
+                    //clone->clone(cloned);
                     Society.add_in_position(clone, i);
                     cout << "Cloning creature in position " << position << endl;
                 }
